@@ -1,0 +1,6 @@
+---
+- hosts: letsencrypt
+  remote_user: vagrant
+  become: true
+  roles:
+    - lets_encrypt_nginx
