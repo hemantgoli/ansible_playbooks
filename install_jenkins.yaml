@@ -31,4 +31,4 @@
     shell: nohup java -DJENKINS_HOME=/jenkins -jar /jenkins/jenkins.war --httpPort=9090 > /jenkins/jenkins_start/log &
 
   - name: Copy jenkins
-    shell: cat /jenkins/secrets/initialAdminPassword
+    shell: cp -rf /jenkins/secrets/initialAdminPassword /jenkins/
