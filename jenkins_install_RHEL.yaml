@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  become: yes
+  remote_user: ec2-user
+  become_user: root
+  tasks:
+  - name: yum update
+    yum:
+     name: '*'
+     state: latest
+
+  - name: Create a Directory /jenkins
+    file:
+     path: /jenkins
+     state: directory
+     mode: 0755
+
+  - name: Download Jenkins LTS
+    become: yes
+    get_url:
+      url: https://get.jenkins.io/war-stable/2.319.3/jenkins.war
+      dest: /jenkins
+      mode: 0755
+
+  - name: Install java
+    yum:
+      name: java-11-openjdk-devel
+      state: present
+
+  - name: installing the jenkins
+    shell: nohup java -DJENKINS_HOME=/jenkins -jar /jenkins/jenkins.war --httpPort=9090 > /jenkins/jenkins_start/log &
+
+  - name: Copy jenkins
+    shell: cat /jenkins/secrets/initialAdminPassword
